@@ -29,6 +29,10 @@ Route::middleware('auth:sanctum')->group(function () {
         ->can('delete', 'product')
         ->name('api.products.destroy');
 
+    Route::patch('/products/{product}/', [ProductController::class, 'update'])
+        ->can('update', 'product')
+        ->name('api.products.update');
+
 
 
 }); 

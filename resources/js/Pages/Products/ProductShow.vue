@@ -68,11 +68,25 @@ export default {
         <h1>
             {{ product.title }}
 
+            <Link :href="route('products.edit', product)" v-if="permissions.update" class="btn btn-outline-secondary me-3 ms-5">Edit</Link>
             <button :disabled="networking" v-if="permissions.delete" @click="deleteProduct" class="btn btn-outline-danger">Delete</button>
         </h1>
-        <p>
-            {{ product.description }}
-        </p>
+
+        <div class="row">
+            <div class="col-md-9">
+                <p>
+                    {{ product.description }}
+                </p>
+            </div>
+            <div class="col-md-3">
+                <img 
+                    v-for="image in product.images" 
+                    :key="image.id" 
+                    :src="image.url"
+                    class="img-fluid mb-3 img-thumbnail"> 
+            </div>
+        
+    </div>
         <Link class="btn btn-outline-secondary" :href="route('products.index')">View all products</Link>
     </MainLayout>
 </template>
