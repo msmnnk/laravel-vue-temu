@@ -33,6 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ->can('update', 'product')
         ->name('api.products.update');
 
-
+    Route::post('/products/{product}/images', [ProductController::class, 'storeImage'])
+        ->can('update', 'product')
+        ->name('api.products.images.store');
 
 }); 

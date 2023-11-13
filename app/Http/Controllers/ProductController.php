@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -43,6 +45,18 @@ class ProductController extends Controller
         //
     }
 
+    public function storeImage(Product $product, StoreImageRequest $request)
+    {
+        $request->validated();
+
+        // Save the file to the disk
+        $path = $request->file('image')->store('images');
+        $url = Storage::url($path);
+
+        // Create the model on the product images relationship
+        return $product->images()->create(compact('url'));
+    }
+
     /**
      * Display the specified resource.
      */
@@ -66,6 +80,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        $product->load('images');
         return Inertia::render('Products/ProductEdit', compact('product'));
         
     }

@@ -58,7 +58,24 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5"></div>
+            <div class="col-md-5">
+                <input 
+                    ref="file" 
+                    :disabled="savingImage"
+                    class="form-control" 
+                    type="file" 
+                    accept="image/*"
+                    @change="imageSelected">
+
+                <hr>
+                <div class="row">
+                    <div class="col-4" v-for="image in model.images" :key="image.id">
+                        <img class="img-thumbnail mb-3" :src="image.url">
+                    </div>
+                    <div v-if="savingImage" class="spinner-grow" style="width: 4rem; height: 4rem;" role="status" />
+                </div>
+            </div>
+
         </div>
 
 
@@ -82,6 +99,7 @@ export default {
         return {
             model: {...this.product},
             networking: false,
+            savingImage: false,
             dirty: false,
             errors: this.resetErrors(),
             errorMessage: ''
@@ -101,16 +119,40 @@ export default {
     watch: {
         'model.title': function() {
             this.setDirty(true);
-            delete this.errors['title'];
+            delete this.errors.title;
         },
 
         'model.description'() {
             this.setDirty(true);
-            delete this.errors['description'];
+            delete this.errors.description;
         }
     },
 
     methods: {
+
+        imageSelected() {
+            const file = this.$refs.file.files[0];
+            if (file) {
+                let formData = new FormData();
+                formData.append('image', file);
+                const url = route('api.products.images.store', this.model);
+                this.savingImage = true;
+                axios.post(url, formData)
+                    .then(this.onImageSaved)
+                    .catch(error => alert('Failed'));
+            }
+        },
+
+        onImageSaved(response) {
+            this.model.images.push(response.data);
+
+            this.savingImage = false;
+            this.resetFileInput();
+        },
+
+        resetFileInput() {
+            this.$refs.file.value = null;
+        },
 
         resetErrors() {
             return {};
