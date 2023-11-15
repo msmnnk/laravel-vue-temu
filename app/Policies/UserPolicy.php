@@ -67,4 +67,9 @@ class UserPolicy
     {
         return rand(0, 1);
     }
+
+    public function divide(User $user): bool
+    {
+        return 'rachel@countdown.com' == $user->email;
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\ProductController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,4 +38,14 @@ Route::middleware('auth:sanctum')->group(function () {
         ->can('update', 'product')
         ->name('api.products.images.store');
 
+    Route::post('/calc/mult', [CalculatorController::class, 'multiply'])
+        ->name('api.calculator.multiply');
+
+    Route::post('/calc/div', [CalculatorController::class, 'multiply'])
+        ->can('divide', User::class)
+        ->name('api.calculator.divide');
+
 }); 
+
+Route::post('/calc/add', [CalculatorController::class, 'add'])
+    ->name('api.calculator.add');
