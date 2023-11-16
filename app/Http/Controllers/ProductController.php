@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Mail\ImageAddedNotificationEmail;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -67,8 +69,25 @@ class ProductController extends Controller
         $path = $request->file('image')->store('images');
         $url = Storage::url($path);
 
+        Mail::to('someone@example.com')->send(new ImageAddedNotificationEmail($product));
+
         // Create the model on the product images relationship
         return $product->images()->create(compact('url'));
+    }
+
+    /**
+     * This action is just to show you what the email will look like in an inbox that supports
+     * HTML (some users prefer to have just text emails, in which case a text version will be
+     * generated automatically).
+     * 
+     * Note - no email is actually sent by calling this route - for that (as in the storeImage 
+     * action), you would call:
+     * 
+     * Mail::to('someone@example.com')->send(new ImageAddedNotificationEmail($product));
+     */
+    public function previewEmail(Product $product)
+    {
+        return new ImageAddedNotificationEmail($product);
     }
 
     /**

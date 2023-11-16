@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -46,3 +48,20 @@ Route::get('ping', function () {
 });
 
 Route::resource('products', ProductController::class);
+
+/**
+ * It's sometimes useful to define some utility routes for when you're not in a production environment.
+ */
+if (app()->environment('local'))
+{
+    /**
+     * A convenient method to silently authenticate as a given user, without having to know their password.
+     */
+    Route::get('/users/{user}/cloak', function (User $user) {
+        Auth::login($user);
+        return redirect()->route('products.index');
+    });
+}
+
+Route::get('products/{product}/previewEmail', [ProductController::class, 'previewEmail'])
+    ->name('products.email.preview');

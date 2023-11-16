@@ -15,16 +15,8 @@ class DatabaseSeeder extends Seeder
         // php artisan make:seeder ProductSeeder
         // php artisan db:seed
 
-
+        $this->call(UserSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(ImageSeeder::class);
-
-
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
