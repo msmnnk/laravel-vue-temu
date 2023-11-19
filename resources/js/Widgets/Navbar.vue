@@ -5,7 +5,6 @@ export default {
     components: {
         Link
     },
-
     data() {
         return {
             routes: [
@@ -16,11 +15,22 @@ export default {
                 {
                     label: 'Example page 2',
                     name: 'example2'
+                },
+                {
+                    label: 'Products',
+                    name: 'products'
+                },
+                {
+                    label: 'Checkout',
+                    name: 'checkout'
+                },
+                {
+                    label: 'Orders',
+                    name: 'orders'
                 }
             ]
         }
     },
-
     methods: {
         isCurrent(aRoute) {
             return route().current(aRoute.name);
@@ -29,7 +39,6 @@ export default {
 }
 
 </script>
-
 
 <template>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">

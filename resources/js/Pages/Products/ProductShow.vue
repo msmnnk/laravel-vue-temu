@@ -79,7 +79,7 @@ export default {
                     {{ product.description }}
                 </p>
 
-                <Link class="btn btn-outline-secondary" :href="route('products.index')">View all products</Link>
+                <Link class="btn btn-outline-secondary" :href="route('products')">View all products</Link>
             </div>
             <div class="col-md-3">
                 <img 

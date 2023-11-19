@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\CalculatorController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-
     /**
      * Returns a random new name
      */
@@ -38,13 +38,24 @@ Route::middleware('auth:sanctum')->group(function () {
         ->can('update', 'product')
         ->name('api.products.images.store');
 
+    Route::post('/orderitems/create/{product}', [OrderItemController::class, 'create'])
+        ->name('api.orderitems.create');
+
+    Route::get('/orderitems', [OrderItemController::class, 'index'])
+        ->name('api.orderitems.get');
+
+    Route::delete('/orderitems/delete/{orderItem}', [OrderItemController::class, 'destroy'])
+        ->name('api.orderitems.delete');
+
+    Route::post('/checkout', [OrderController::class, 'checkout'])
+        ->name('api.checkout');
+
     Route::post('/calc/mult', [CalculatorController::class, 'multiply'])
         ->name('api.calculator.multiply');
 
     Route::post('/calc/div', [CalculatorController::class, 'multiply'])
         ->can('divide', User::class)
         ->name('api.calculator.divide');
-
 }); 
 
 Route::post('/calc/add', [CalculatorController::class, 'add'])

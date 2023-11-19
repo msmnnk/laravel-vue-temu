@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
-use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,7 +47,22 @@ Route::get('ping', function () {
     return Auth::user();
 });
 
-Route::resource('products', ProductController::class);
+Route::resource('products', ProductController::class)
+    ->names(['index' => 'products']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/checkout', function () {
+        return Inertia::render('Checkout', [
+            'orderItems' => OrderItemController::index()
+        ]);
+    })->name('checkout');
+    
+    Route::get('/orders', function () {
+        return Inertia::render('Orders', [
+            'orders' => OrderController::index()
+        ]);
+    })->name('orders');
+});
 
 /**
  * It's sometimes useful to define some utility routes for when you're not in a production environment.

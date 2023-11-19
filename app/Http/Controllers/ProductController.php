@@ -26,7 +26,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::all()->load('images');
 
         // Method 1 - use the cache remember function
         $featured = Cache::remember('featured', 10* 60, function () use ($products) {
@@ -41,8 +41,8 @@ class ProductController extends Controller
         
         $featured = Cache::get('featured');
         */
-
-        return Inertia::render('Products/ProductIndex', compact('products', 'featured'));
+        $charity = CharityController::index();
+        return Inertia::render('Products/ProductIndex', compact('products', 'featured', 'charity'));
     }
 
     /**
