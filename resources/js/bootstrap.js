@@ -7,6 +7,9 @@
 import axios from 'axios';
 window.axios = axios;
 
+import Swal from 'sweetalert2';
+window.Swal = Swal;
+
 const csrfMeta = document.getElementById('csrf');
 
 if (csrfMeta)

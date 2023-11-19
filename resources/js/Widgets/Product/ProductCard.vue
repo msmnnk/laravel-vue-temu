@@ -28,13 +28,15 @@
     height: 90%;
 }
 
-.card-title:hover, .card-img-top:hover {
+.card-title:hover,
+.card-img-top:hover {
     cursor: pointer;
 }
 </style>
 
 <script>
 import { router } from '@inertiajs/vue3';
+import Swal from 'sweetalert2';
 import { ref, onMounted, computed } from 'vue';
 export default {
     props: {
@@ -64,11 +66,31 @@ export default {
             router.visit(route('products.show', this.product));
         },
         addToCart(product) {
+            Swal.fire({
+                title: 'Adding ' + product.title + ' to cart',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+
             axios.post(route('api.orderitems.create', product))
                 .then(response => {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Added ' + product.title + ' to cart!',
+                    });
                     console.log(response.data);
                 })
                 .catch(error => {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An unexpected error occured. Please try again.',
+                    });
                     console.log(error);
                 })
         }

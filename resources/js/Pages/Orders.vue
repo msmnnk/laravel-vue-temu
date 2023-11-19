@@ -46,7 +46,7 @@ export default {
 <template>
     <Head title="Checkout" />
     <MainLayout>
-        <DonationHero :title="'You have donated £' + total " subtitle="thank you:)" buttonLabel="penis"/>
+        <DonationHero :title="'You have donated £' + total " subtitle="thank you:)" buttonLabel="Learn more"/>
 
         <h1>Orders</h1>
         <table class="table table-striped" v-if="orders.length" v-for="order in orders">
