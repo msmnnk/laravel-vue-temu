@@ -26,17 +26,34 @@ export default {
             type: Object
         }
     },
+    data() {
+        return {
+            refProducts: [...this.products],
+            refFeatured: [...this.featured]
+        };
+    },
     computed: {
         amountRaised() {
             return (this.charity.TotalDonated / 100).toFixed(2);
         }
     },
-    data() {
-        return {
+    methods: {
+        updateProductStock(order)
+        {
+            var product = order.product;
+            this.refProducts.forEach(p => {
+                if(p.id == product.id) {
+                    p.stock = product.stock;
+                }
+            });
+            this.refFeatured.forEach(p => {
+                if(p.id == product.id) {
+                    p.stock = product.stock;
+                }
+            });
         }
     }
 }
-
 </script>
 
 <template>
@@ -44,20 +61,19 @@ export default {
     <MainLayout>
         <DonationHero :title="'Together we have raised £' + amountRaised" :subtitle="'for ' + charity.name" buttonLabel="Learn more"></DonationHero>
         <h1>Products</h1>
-        <Link :href="route('example1')">Go to page 1</Link>
 
         <h3>Featured products</h3>
         <div class="row">
-            <div v-for="product in featured" :key="product.id" class="col-12 col-md-4">
-                <ProductCard :product="product" :donation="charity.donation_percentage"/>
+            <div v-for="product in refFeatured" :key="product.id" class="col-12 col-md-4">
+                <ProductCard :product="product" :donation="charity.donation_percentage" @addedToCheckout="updateProductStock"/>
             </div>
         </div>
         
         <hr>
         <h3>All products</h3>
         <div class="row">
-            <div v-for="product in products" :key="product.id" class="col-12 col-md-4">
-                <ProductCard :product="product" :donation="charity.donation_percentage"/>
+            <div v-for="product in refProducts" :key="product.id" class="col-12 col-md-4">
+                <ProductCard :product="product" :donation="charity.donation_percentage" @addedToCheckout="updateProductStock"/>
             </div>
         </div>
     </MainLayout>

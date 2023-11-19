@@ -26,6 +26,13 @@ class OrderItemController extends Controller
      */
     public function create(Product $product)
     {
+        if($product->stock <= 0) {
+            abort(409, 'Product out of stock');
+        }
+
+        $product->stock = $product->stock - 1;
+        $product->save();
+
         $user=Auth::user();
         return OrderItem::create([
             'product_id' => $product->id,
@@ -42,6 +49,10 @@ class OrderItemController extends Controller
         if($orderItem->order()->exists()) {
             abort(405, 'Cannot delete order item that is attached to an order');
         }
+
+        $product = $orderItem->product()->first();
+        $product->stock = $product->stock + 1;
+        $product->save();
 
         $orderItem->delete();
         return OrderItemController::index();

@@ -29,8 +29,13 @@ class ProductController extends Controller
         $products = Product::all()->load('images');
 
         // Method 1 - use the cache remember function
-        $featured = Cache::remember('featured', 10* 60, function () use ($products) {
+        $featureCache = Cache::remember('featured', 10* 60, function () use ($products) {
             return $products->random(3);
+        });
+
+        //Get up to date values because of stock changes
+        $featured = $featureCache->map(function($f) {
+            return Product::where('id', $f->id)->first()->load('images');
         });
 
         // Method 2 - use the individual cache functions

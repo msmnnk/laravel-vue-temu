@@ -37,25 +37,58 @@ export default {
 
     methods: {
         remove(item) {
-            axios.delete(route('api.orderitems.delete', item))
-            .then(response => {
-                this.refOrderItems = response.data;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(route('api.orderitems.delete', item))
+                        .then(response => {
+                            this.refOrderItems = response.data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
             })
-            .catch(error => {
-                console.log(error);
-            });
         },
         price(price) {
             return (price / 100).toFixed(2);
         },
         checkout() {
-            axios.post(route('api.checkout'))
-            .then(response => {
-                window.location.reload();
-            })
-            .catch(error => {
-                console.log(error);
+            Swal.fire({
+                title: 'Checking out your order',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                }
             });
+            axios.post(route('api.checkout'))
+                .then(response => {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'We recieved your order!'
+                    }).then(r => {
+                        window.location.href = route('orders');
+                    });
+
+                })
+                .catch(error => {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An unexpected error occured. Please try again.',
+                    });
+                    console.log(error);
+                });
         }
     },
     computed: {
@@ -94,8 +127,8 @@ export default {
                     <td><button class="btn btn-danger" @click="remove(item)">Remove</button></td>
                 </tr>
                 <tr>
-                    <td/>
-                    <td/>
+                    <td />
+                    <td />
                     <td><strong>Total: </strong>£{{ total }}</td>
                     <td><button class="btn btn-primary" @click="checkout()">Checkout</button></td>
                 </tr>

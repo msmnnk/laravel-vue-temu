@@ -6,12 +6,11 @@ import DonationHero from '../Widgets/Donation/DonationHero.vue';
 
 export default {
     components: {
-    MainLayout,
-    Head,
-    Link,
-    DonationHero
-},
-
+        MainLayout,
+        Head,
+        Link,
+        DonationHero
+    },
     props: {
         orders: {
             required: true,
@@ -53,9 +52,9 @@ export default {
             <thead>
                 <tr>
                     <th scope="col">Order ID: {{ order.id }}</th>
-                    <th scope="col">Placed: {{ order.created_at }}</th>
-                    <th scope="col">Total: {{ toPounds(order.total) }}</th>
-                    <th scope="col">Donated: {{ toPounds(order.donation) }}</th>
+                    <th scope="col">Placed: {{ new  Date(order.created_at).toLocaleString() }}</th>
+                    <th scope="col">Total: £{{ toPounds(order.total) }}</th>
+                    <th scope="col">Donated: £{{ toPounds(order.donation) }}</th>
                 </tr>
             </thead>
             <tbody>

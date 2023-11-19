@@ -14,7 +14,8 @@ class OrderController extends Controller
     public static function index()
     {
         $user = Auth::user();
-        return Order::where('user_id', $user->id)
+        return Order::latest()
+            ->where('user_id', $user->id)
             ->get()
             ->load(['user', 'orderItems.product.images']);  
     }

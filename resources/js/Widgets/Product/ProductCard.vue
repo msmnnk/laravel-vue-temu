@@ -17,7 +17,8 @@
                 <li class="list-group-item"><strong>Price: </strong>£{{ price }}</li>
                 <li class="list-group-item">Buying this will donate £{{ donation }} to charity</li>
             </ul>
-            <button class="btn btn-primary mb-3" @click="addToCart(product)">Add to cart</button>
+            <button v-if="product.stock > 0" class="btn btn-primary mb-3" @click="addToCart(product)">Add to cart</button>
+            <div v-else>Out of stock</div>
         </div>
     </div>
 </template>
@@ -39,6 +40,7 @@ import { router } from '@inertiajs/vue3';
 import Swal from 'sweetalert2';
 import { ref, onMounted, computed } from 'vue';
 export default {
+    emits: ['addedToCheckout'],
     props: {
         product: {
             required: true,
@@ -59,7 +61,6 @@ export default {
             props
         }
     },
-
     methods: {
         showCard() {
             // take us to the product page 
@@ -84,6 +85,7 @@ export default {
                         title: 'Added ' + product.title + ' to cart!',
                     });
                     console.log(response.data);
+                    this.$emit('addedToCheckout', response.data);
                 })
                 .catch(error => {
                     Swal.close();
@@ -93,9 +95,8 @@ export default {
                     });
                     console.log(error);
                 })
-        }
+        },
     },
-
     computed: {
         thumbnail() {
             if (this.product.images) {
