@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
@@ -62,6 +63,9 @@ Route::middleware('auth:sanctum')->group(function () {
             'orders' => OrderController::index()
         ]);
     })->name('orders');
+
+    Route::get('/admin', [AdminDashboardController::class, 'index'])
+        ->name('admindashboard');
 });
 
 /**

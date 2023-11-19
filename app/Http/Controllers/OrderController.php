@@ -31,7 +31,7 @@ class OrderController extends Controller
             abort(409, 'Cannot checkout an empty cart');
         }
 
-        $charity = CharityController::index();
+        $charity = CharityController::latest();
 
         $order = Order::create([
             'user_id' => $user->id,

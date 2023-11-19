@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Mail\ImageAddedNotificationEmail;
@@ -19,7 +20,6 @@ class ProductController extends Controller
     {
         $this->authorizeResource(Product::class);
     }
-
 
     /**
      * Display a listing of the resource.
@@ -46,16 +46,23 @@ class ProductController extends Controller
         
         $featured = Cache::get('featured');
         */
-        $charity = CharityController::index();
+        $charity = CharityController::latest();
         return Inertia::render('Products/ProductIndex', compact('products', 'featured', 'charity'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(CreateProductRequest $request)
     {
-        //
+        $request->validated();
+        Product::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'category' => $request->input('category'),
+            'stock' => $request->input('stock'),
+            'price' => $request->input('price')
+        ]);
     }
 
     /**

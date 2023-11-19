@@ -26,6 +26,10 @@ Route::middleware('auth:sanctum')->group(function () {
         return fake()->name();
     })->name('api.name')->can('getName', User::class);
 
+    Route::post('/admin/create', [ProductController::class, 'create'])
+        ->can('create', 'product')
+        ->name('api.products.create');
+    
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])
         ->can('delete', 'product')
         ->name('api.products.destroy');

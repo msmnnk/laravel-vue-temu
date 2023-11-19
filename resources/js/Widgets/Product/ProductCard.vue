@@ -15,7 +15,7 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><strong>Stock: </strong>{{ product.stock }}</li>
                 <li class="list-group-item"><strong>Price: </strong>£{{ price }}</li>
-                <li class="list-group-item">Buying this will donate £{{ donation }} to charity</li>
+                <li class="list-group-item">Buying this will donate £{{ donationAmount }} to charity</li>
             </ul>
             <button v-if="product.stock > 0" class="btn btn-primary mb-3" @click="addToCart(product)">Add to cart</button>
             <div v-else>Out of stock</div>
@@ -89,6 +89,10 @@ export default {
                 })
                 .catch(error => {
                     Swal.close();
+                    if(error.response.status == 409) {
+                        window.location.href = route('login');
+                        return;
+                    }
                     Swal.fire({
                         icon: 'error',
                         title: 'An unexpected error occured. Please try again.',
@@ -110,7 +114,7 @@ export default {
             return (this.product.price / 100).toFixed(2);
         },
 
-        donation() {
+        donationAmount() {
             return ((this.product.price * (this.donation / 100)) / 100).toFixed(2);
         }
     }

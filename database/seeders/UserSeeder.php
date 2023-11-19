@@ -20,10 +20,14 @@ class UserSeeder extends Seeder
         Role::create(['name' => 'admin']);
 
         User::factory(10)->create();
+        $admin =
         User::create([
             'name' => 'admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('password')
-        ])->assignRole('admin');
+        ]);
+        $admin->assignRole('admin');
+        $admin->save();
+        echo($admin->hasRole('admin'));
     }
 }

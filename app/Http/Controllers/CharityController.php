@@ -9,6 +9,11 @@ class CharityController extends Controller
 {
     public static function index()
     {
+        return Charity::all();
+    }
+
+    public static function latest()
+    {
         return Charity::latest()->first();
     }
 
