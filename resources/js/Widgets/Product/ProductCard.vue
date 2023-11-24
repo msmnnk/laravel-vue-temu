@@ -26,7 +26,7 @@
 <style scoped>
 .card {
     min-height: 300px;
-    height: 90%;
+    height: 91%;
 }
 
 .card-title:hover,
@@ -103,8 +103,8 @@ export default {
     },
     computed: {
         thumbnail() {
-            if (this.product.images) {
-                return this.product.images[0].url;
+            if (this.product.images && this.product.images.length) {
+            return this.product.images[0].url;
             } else {
                 return 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
             }

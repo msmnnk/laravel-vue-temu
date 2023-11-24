@@ -62,7 +62,7 @@ export default {
         <DonationHero :title="'Together we have raised £' + amountRaised" :subtitle="'for ' + charity.name" buttonLabel="Learn more"></DonationHero>
         <h1>Products</h1>
 
-        <h3>Featured products</h3>
+        <h3>Best sellers</h3>
         <div class="row">
             <div v-for="product in refFeatured" :key="product.id" class="col-12 col-md-4">
                 <ProductCard :product="product" :donation="charity.donation_percentage" @addedToCheckout="updateProductStock"/>

@@ -16,8 +16,9 @@ class ImageFactory extends Factory
      */
     public function definition(): array
     {
+        
         return [
-            'url' => fake()->imageUrl(),
+            'url' => "https://picsum.photos/id/" .fake()->numberBetween(1, 200). "/640/480",
             'product_id' => 1
         ];
     }

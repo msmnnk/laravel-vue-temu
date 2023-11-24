@@ -14,10 +14,10 @@ class CharitySeeder extends Seeder
     public function run(): void
     {
         Charity::create([
-            'name' => 'Cancer Research UK',
+            'name' => 'Youth Cancer Trust',
             'description' => 'Get involved and make a difference',
-            'website' => 'www.cancerresearchuk.org',
-            'donation_percentage' => 10
+            'website' => 'https://www.youthcancertrust.org',
+            'donation_percentage' => 30
         ]);
     }
 }

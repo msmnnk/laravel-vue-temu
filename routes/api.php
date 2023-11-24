@@ -4,6 +4,7 @@ use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('api.name')->can('getName', User::class);
 
     Route::post('/admin/create', [ProductController::class, 'create'])
-        ->can('create', 'product')
+        ->can('create', Product::class)
         ->name('api.products.create');
     
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])

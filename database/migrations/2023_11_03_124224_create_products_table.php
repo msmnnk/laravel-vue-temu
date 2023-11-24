@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->text('category');
-            $table->text('fabric');
-            $table->text('size');
             $table->integer('price')->unsigned();
             $table->integer('stock')->unsigned();
         });

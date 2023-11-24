@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('website');
-            $table->float('donation_percentage')->unsigned();
+            $table->float('donation_percentage')->unsigned()->default(20);
         });
     }
 

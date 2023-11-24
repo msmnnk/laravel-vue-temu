@@ -33,9 +33,15 @@ class ProductController extends Controller
             return $products->random(3);
         });
 
-        //Get up to date values because of stock changes
-        $featured = $featureCache->map(function($f) {
-            return Product::where('id', $f->id)->first()->load('images');
+        // Specify the featured product IDs
+        $featuredProductIds = [1, 2, 3];
+
+        // Filter products based on the specified IDs
+        $featured = $products->whereIn('id', $featuredProductIds);
+
+        // If you want to maintain the order of the specified IDs, you can sort the collection
+        $featured = $featured->sortBy(function ($product) use ($featuredProductIds) {
+            return array_search($product->id, $featuredProductIds);
         });
 
         // Method 2 - use the individual cache functions
@@ -55,14 +61,8 @@ class ProductController extends Controller
      */
     public function create(CreateProductRequest $request)
     {
-        $request->validated();
-        Product::create([
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'category' => $request->input('category'),
-            'stock' => $request->input('stock'),
-            'price' => $request->input('price')
-        ]);
+        $data = $request->validated();
+        return Product::create($data);
     }
 
     /**
@@ -113,6 +113,7 @@ class ProductController extends Controller
         ];
 
         $product->load('images');
+
 
         return Inertia::render('Products/ProductShow', compact(
             'product',
